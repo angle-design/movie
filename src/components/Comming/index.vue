@@ -1,73 +1,39 @@
 <template>
   <div class="movie_body">
     <ul>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
+      <li v-for="item in comingList" :key="item.id">
+        <div class="pic_show"><img :src="item.img | setWH('128.180')"/></div>
         <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">1766</span>人想看</p>
-          <p>主演：陈建斌</p>
-          <p>2018-11-30上映</p>
+          <h2>{{item.nm}}<span v-if="item.version">3dmax</span></h2>
+          <p><span class="person">{{item.wish}}</span>人想看</p>
+          <p>主演：{{item.star}}</p>
+          <p>{{item.rt}}}上映</p>
         </div>
         <div class="btn_mall">
           预售
         </div>
       </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">1766</span>人想看</p>
-          <p>主演：陈建斌</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_mall">
-          预售
-        </div>
-      </li>  <li>
-      <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-      <div class="info_list">
-        <h2>无名之辈</h2>
-        <p><span class="person">1766</span>人想看</p>
-        <p>主演：陈建斌</p>
-        <p>2018-11-30上映</p>
-      </div>
-      <div class="btn_mall">
-        预售
-      </div>
-    </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">1766</span>人想看</p>
-          <p>主演：陈建斌</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_mall">
-          预售
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p><span class="person">1766</span>人想看</p>
-          <p>主演：陈建斌</p>
-          <p>2018-11-30上映</p>
-        </div>
-        <div class="btn_mall">
-          预售
-        </div>
-      </li>
-
     </ul>
   </div>
 </template>
 
 <script>
     export default {
-        name: "comming"
+      name: "comming",
+      data(){
+          return{
+            comingList:[]
+        }
+      },
+      mounted() {
+          this.axios.get('/api/movieComingList?cityId=20').then((res)=>{
+            var msg=res.data.msg;
+            if(msg === 'ok'){
+              this.comingList=res.data.data.comingList;
+              console.log(res.data)
+            }
+          })
+      }
     }
 </script>
 
@@ -102,6 +68,10 @@
             overflow: hidden;
             white-space: nowrap;
             font-weight: bold;
+            span{
+              font-size:0.26rem;
+              color:#ff0000;
+            }
           }
           p{
             font-size:0.26rem;

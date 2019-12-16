@@ -1,85 +1,13 @@
 <template>
   <div class="movie_body">
     <ul>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
+      <li v-for="item in movieList" :key="item.id">
+        <div class="pic_show"><img :src="item.img | setWH('128.180')"/></div>
         <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
-        </div>
-        <div class="btn_mall">
-          购票
-        </div>
-      </li>
-      <li>
-        <div class="pic_show"><img src="/static/images/qian.jpg"/></div>
-        <div class="info_list">
-          <h2>无名之辈</h2>
-          <p>观众评分<span class="grade">9.2</span></p>
-          <p>主演：陈建斌</p>
-          <p>今天五十吴嘉放映2222场</p>
+          <h2>{{item.nm}}<span v-if="item.version">3dmax</span></h2>
+          <p>观众评分<span class="grade">{{item.sc}}</span></p>
+          <p>主演：{{item.star}}</p>
+          <p>{{item.showInfo}}</p>
         </div>
         <div class="btn_mall">
           购票
@@ -91,7 +19,20 @@
 
 <script>
     export default {
-        name: "nowplaying"
+        name: "nowplaying",
+      data(){
+        return{
+          movieList:[]
+        }
+      },
+      mounted(){
+          this.axios.get('/api/movieOnInfoList?cityId=10').then(res=>{
+            var msg=res.data.msg;
+            if(msg==='ok'){
+              this.movieList=res.data.data.movieList
+            }
+          })
+      }
     }
 </script>
 
@@ -126,6 +67,10 @@
             overflow: hidden;
             white-space: nowrap;
             font-weight: bold;
+            span{
+              font-size:0.26rem;
+              color:#ff0000;
+            }
           }
           p{
             font-size:0.26rem;
