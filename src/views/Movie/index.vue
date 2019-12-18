@@ -4,13 +4,13 @@
     <div id="content">
       <div class="movie_menu">
         <router-link tag="div" to="/movie/city" class="city_name">
-          <span >大连</span>
+          <span>{{$store.state.city.nm}}</span>
         </router-link>
         <div class="hot_switch">
           <router-link tag="div" to="/movie/nowplaying" class="hot_item">正在热映</router-link>
           <router-link tag="div" to="/movie/comming" class="hot_item">即将上映</router-link>
         </div>
-        <router-link tag="div" to="/movie/search"  class="search_entry">
+        <router-link tag="div" to="/movie/search" class="search_entry">
           搜索
         </router-link>
       </div>
@@ -25,13 +25,43 @@
 <script>
   import Header from '@/components/Header'
   import Tab from '@/components/TabBar'
-    export default {
-      name:'movie',
-      components:{
-        Header,
-        Tab
-      }
+  import {messagebox} from '@/components/js'
+
+  export default {
+    name: 'movie',
+    components: {
+      Header,
+      Tab
+    },
+    mounted(){
+      setTimeout(()=>{
+        this.axios.get('/api/getLocation').then(res=>{
+          var msg=res.data.msg;
+          if(msg==='ok'){
+            var nm=res.data.data.nm;
+            var id=res.data.data.id;
+            if(this.$store.state.city.id == id){return;}
+            messagebox({
+              title: '定位',
+              content:nm,
+              cancle:'取消',
+              ok:'切换定位',
+              handleCancel(){
+                console.log(1)
+              },
+              handleOk(){
+                window.localStorage.setItem('nowNm',nm)
+                window.localStorage.setItem('nowId',id)
+                window.location.reload()
+              }
+            })
+          }
+        })
+      },3000)
+
+
     }
+  }
 </script>
 
 <style scoped lang="less">
@@ -53,47 +83,47 @@
         height: 100%;
         line-height: 0.9rem;
         box-sizing: border-box;
-        &.active{
-          color:#ef4238;
-          border-bottom:0.04rem #ef4238 solid;
+        &.active {
+          color: #ef4238;
+          border-bottom: 0.04rem #ef4238 solid;
         }
-        &.router-link-active{
-          color:#ef4238;
-          border-bottom:0.04rem #ef4238 solid;
+        &.router-link-active {
+          color: #ef4238;
+          border-bottom: 0.04rem #ef4238 solid;
         }
       }
-      .hot_switch{
+      .hot_switch {
         display: flex;
-        height:100%;
-        line-height:0.9rem;
-        .hot_item{
-          font-size:0.3rem;
-          color:#666;
-          width:1.6rem;
+        height: 100%;
+        line-height: 0.9rem;
+        .hot_item {
+          font-size: 0.3rem;
+          color: #666;
+          width: 1.6rem;
           text-align: center;
           margin: 0 0.24rem;
-          font-weight:700;
-          &.active{
-            color:#ef4238;
-            border-bottom:0.04rem #ef4238 solid;
+          font-weight: 700;
+          &.active {
+            color: #ef4238;
+            border-bottom: 0.04rem #ef4238 solid;
           }
-          &.router-link-active{
-            color:#ef4238;
-            border-bottom:0.04rem #ef4238 solid;
+          &.router-link-active {
+            color: #ef4238;
+            border-bottom: 0.04rem #ef4238 solid;
           }
         }
       }
-      .search_entry{
-        margin-right:0.4rem;
-        height:100%;
+      .search_entry {
+        margin-right: 0.4rem;
+        height: 100%;
         line-height: 0.9rem;
-        &.active{
-          color:#ef4238;
-          border-bottom:0.04rem #ef4238 solid;
+        &.active {
+          color: #ef4238;
+          border-bottom: 0.04rem #ef4238 solid;
         }
-        &.router-link-active{
-          color:#ef4238;
-          border-bottom:0.04rem #ef4238 solid;
+        &.router-link-active {
+          color: #ef4238;
+          border-bottom: 0.04rem #ef4238 solid;
         }
       }
     }
