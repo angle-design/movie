@@ -28,33 +28,34 @@
 <script>
   export default {
     name: "search",
-    data(){
-      return{
-        message:"",
-        movieList:[]
+    data() {
+      return {
+        message: "",
+        movieList: []
       }
     },
-    methods:{
-      cancelRequest(){
-        if(typeof this.source==="function"){
+    methods: {
+      cancelRequest() {
+        if (typeof this.source === "function") {
           this.source('中止请求')
         }
       }
     },
-    watch:{
-      message(newval){
-        var that=this;
+    watch: {
+      message(newval) {
+        var that = this;
+        var cityId = this.$store.state.city.id;
         this.cancelRequest()
-        this.axios.get('/api/searchList?cityId=10&kw='+newval,{
-          cancelToken:new this.axios.CancelToken(function executor(c){
-            that.source=c
+        this.axios.get('/api/searchList?cityId=' + cityId + '&kw=' + newval, {
+          cancelToken: new this.axios.CancelToken(function executor(c) {
+            that.source = c
           })
-        }).then((res)=>{
-            var msg=res.data.msg;
-            var movies=res.data.data.movies;
-            if(msg&&movies){
-              this.movieList=res.data.data.movies.list;
-            }
+        }).then((res) => {
+          var msg = res.data.msg;
+          var movies = res.data.data.movies;
+          if (msg && movies) {
+            this.movieList = res.data.data.movies.list;
+          }
         }).catch((err) => {
           if (this.axios.isCancel(err)) {
             console.log('Rquest canceled', err.message); //请求如果被取消，这里是返回取消的message
@@ -94,56 +95,56 @@
       }
     }
     .search_result {
-        h3 {
-          font-size: 0.3rem;
-          color: #999;
+      h3 {
+        font-size: 0.3rem;
+        color: #999;
+        padding: 0.18rem 0.3rem;
+        border-bottom: 0.02rem solid #e6e6e6;
+      }
+      ul {
+        li {
+          border-bottom: 0.02rem solid #c9c9c9;
           padding: 0.18rem 0.3rem;
-          border-bottom: 0.02rem solid #e6e6e6;
-        }
-          ul {
-            li {
-              border-bottom: 0.02rem solid #c9c9c9;
-              padding: 0.18rem 0.3rem;
-              box-sizing: border-box;
+          box-sizing: border-box;
+          display: flex;
+
+          .img {
+            width: 1.2rem;
+            float: left;
+
+            img {
+              width: 100%;
+            }
+          }
+
+          .info {
+            float: left;
+            margin-left: 0.3rem;
+            flex: 1;
+
+            p {
+              height: 0.44rem;
               display: flex;
+              line-height: 0.44rem;
+              font-size: 0.24rem;
 
-              .img {
-                width: 1.2rem;
-                float: left;
-
-                img {
-                  width: 100%;
-                }
-              }
-
-              .info {
-                float: left;
-                margin-left: 0.3rem;
-                flex: 1;
-
-                p {
-                  height: 0.44rem;
-                  display: flex;
-                  line-height: 0.44rem;
-                  font-size: 0.24rem;
-
+              &:nth-of-type(1) {
+                span {
                   &:nth-of-type(1) {
-                    span {
-                      &:nth-of-type(1) {
-                        font-size: 0.36rem;
-                        flex: 1;
-                      }
+                    font-size: 0.36rem;
+                    flex: 1;
+                  }
 
-                      &:nth-of-type(2) {
-                        font-size: 0.32rem;
-                        color: #f7c103
-                      }
-                    }
+                  &:nth-of-type(2) {
+                    font-size: 0.32rem;
+                    color: #f7c103
                   }
                 }
               }
             }
           }
+        }
       }
     }
+  }
 </style>
