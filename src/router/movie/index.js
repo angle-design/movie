@@ -8,7 +8,7 @@ export default {
     },
     {
       path:'nowplaying',
-      component:()=>import('@/components/Nowplaying'),
+      component:()=>import('@/components/nowplaying'),
     },
     {
       path:'comming',
@@ -17,6 +17,26 @@ export default {
     {
       path:'search',
       component:()=>import('@/components/Search'),
+    },
+    {
+      path:'detail/1/:movieid',
+      components:{
+        default:()=>import('@/components/nowplaying'),
+        detail:()=>import('@/views/Movie/detail')
+      },
+      props:{
+        detail:true
+      }
+    },
+    {
+      path:'detail/2/:movieid',
+      components:{
+        default:()=>import('@/components/Comming'),
+        detail:()=>import('@/views/Movie/detail')
+      },
+      props:{
+        detail:true
+      }
     },
     {
       path:'/movie',
