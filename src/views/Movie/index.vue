@@ -19,6 +19,7 @@
       </keep-alive>
     </div>
     <Tab/>
+    <router-view name="detail" />
   </div>
 </template>
 
